@@ -1,0 +1,74 @@
+.model small
+.stack 100h
+.data
+    msg db 0ah,0dh,"enter a char : $"
+    msg1 db 0ah,0dh,"input is invalid$"
+    msg2 db 0ah,0dh,"input is upper case$"
+    msg3 db 0ah,0dh,"input is lower case$"
+    new db 0ah,0dh,"$"
+    char db ?
+.code
+
+main proc
+    mov ax,@data
+    mov ds,ax
+    
+    start:
+    mov ah,1
+    int 21h           
+    mov char,al
+    
+    cmp char, 41h     ; if char == 'A'
+    jb invalid
+    jae upper
+     
+    
+    
+    
+    invalid:          ; if invalid
+    mov ah,9
+    lea dx,msg1
+    int 21h
+    jmp exit 
+    
+    
+    upper:            
+    cmp char, 5ah     ; if char == 'Z'
+    jbe upperTrue
+    ja upperFalse
+    
+    
+    upperTrue:        
+    mov ah,9
+    lea dx,msg2
+    int 21h
+    jmp exit
+    
+    
+    upperFalse:
+    cmp char, 61h     ; if char == 'a'
+    jb invalid
+    jae lower
+    
+    
+    lower:
+    cmp char, 7ah     ; if char == 'z' 
+    ja invalid
+    jbe lowerTrue
+    
+    lowerTrue:
+    mov ah,9
+    lea dx,msg3
+    int 21h
+    
+    exit:
+    mov ah,9
+    lea dx,new
+    int 21h
+    jmp start
+    main endp
+end
+        
+     
+    
+        

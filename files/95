@@ -1,0 +1,90 @@
+.model small
+.stack 100h
+
+.data
+msg1 db 0ah,0dh,"input is in upper case$"
+msg2 db 0ah,0dh,"input is in lower case$"
+msg3 db 0ah,0dh,"input is invalid$"
+msg4 db 0ah,0dh,"converted to upper case : $"
+msg5 db 0ah,0dh,"converted to lower case : $"
+ascii db ?
+input db ?
+
+.code
+
+main proc
+    mov ax,@data
+    mov ds,ax
+    
+    start:
+        mov ah,1
+        int 21h
+        mov input,al
+    
+    
+        mov cx,26
+        mov ascii,41h
+    upper:
+        cmp al,ascii
+        je upperTrue
+        inc ascii
+        loop upper
+    
+    
+        mov cx,26
+        mov ascii,61h
+    lower:
+        cmp al,ascii
+        je lowerTrue
+        inc ascii
+        loop lower
+    
+    
+    invalid:
+        mov ah,9
+        lea dx,msg3
+        int 21h
+        jmp exit
+    
+        
+    upperTrue:
+        mov ah,9
+        lea dx,msg1
+        int 21h
+        jmp toLower
+    
+    
+    lowerTrue:
+        mov ah,9
+        lea dx,msg2
+        int 21h
+        jmp toUpper
+    
+    
+    toUpper:
+        mov ah,9
+        lea dx,msg4
+        int 21h
+        sub input,20h
+        mov dl,input
+        mov ah,2
+        int 21h
+        jmp exit
+     
+    
+    toLower:
+        mov ah,9
+        lea dx,msg5
+        int 21h
+        add input,20h
+        mov dl,input
+        mov ah,2
+        int 21h
+        jmp exit
+    
+            
+    exit:    
+    mov ah,4ch
+    int 21h
+    main endp
+end

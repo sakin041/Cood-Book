@@ -1,0 +1,183 @@
+#include<stdio.h>
+#include<iostream>
+#include<stdlib.h>
+using namespace std;
+
+struct node
+{
+    int key;
+    struct node *left,*right,*parent;
+};
+
+node* newNode(int x)
+{
+    node *temp = (node*) malloc(sizeof(node));
+    temp->key = x;
+    temp->left = temp->right = NULL;
+    return temp;
+};
+
+node* minNode(node* root)
+{
+    node* trav = root;
+    while(trav->left != NULL)
+        trav = trav->left;
+    return trav;
+}
+
+node* maxNode(node* root)
+{
+    node* trav = root;
+    while(trav->right != NULL)
+        trav = trav->right;
+    return trav;
+}
+
+node* searchNode(node* root,int key)
+{
+    if(key == root->key || root == NULL)
+        return root;
+    else if(key < root->key)
+        return searchNode(root->left,key);
+    else
+        return searchNode(root->right,key);
+}
+
+node* getSuccessor(node* root,int key)  // lowest ancestor whose left child is also an ancestor
+{
+    node* given = searchNode(root,key);
+    if(given->right != NULL)
+        return minNode(given->right);
+    else
+    {
+        node* successor = NULL;
+        node* trav = root;
+        while(trav != given)
+        {
+            if(trav->key > key)
+            {
+                successor = trav;
+                trav = trav->left;
+            }
+            else
+                trav = trav->right;
+        }
+        return successor;
+    }
+}
+
+node* getPredecessor(node* root,int key)
+{
+    node* given = searchNode(root,key);
+    if(given->left != NULL)
+        return maxNode(given->left);
+    else
+    {
+        node* predecessor = NULL;
+        node* trav = root;
+        while(trav != given)
+        {
+            if(trav->key < key)
+            {
+                predecessor = trav;
+                trav = trav->right;
+            }
+            else
+                trav = trav->left;
+        }
+        return predecessor;
+    }
+}
+
+node* insertNode(node* root,int key)
+{
+    if(root == NULL)
+        return newNode(key);
+    if(key < root->key)
+        root->left = insertNode(root->left,key);
+    else if (key > root->key)
+        root->right = insertNode(root->right,key);
+    return root;
+}
+
+node* deleteNode(node* root,int key)
+{
+    if(key < root->key)
+        root->left = deleteNode(root->left,key);
+    else if(key > root->key)
+        root->right = deleteNode(root->right,key);
+    else
+    {
+        node* temp;
+        if(root->left == NULL)
+        {
+            temp = root->right;
+            free(root);
+            return temp;
+        }
+        else if(root->right == NULL)
+        {
+            temp = root->left;
+            free(root);
+            return temp;
+        }
+        else
+        {
+            temp = minNode(root->right);
+            root->key = temp->key;
+            root->right = deleteNode(root->right,temp->key);
+            return root;
+        }
+    }
+}
+
+void preOrder(node* root)
+{
+    if(root == NULL)
+        return;
+    cout << root->key << " ";
+    preOrder(root->left);
+    preOrder(root->right);
+}
+
+void postOrder(node* root)
+{
+    if(root == NULL)
+        return;
+    postOrder(root->left);
+    postOrder(root->right);
+    cout << root->key << " ";
+}
+
+void inOrder(node* root)
+{
+    if(root == NULL)
+        return;
+    inOrder(root->left);
+    cout << root->key << " ";
+    inOrder(root->right);
+}
+
+int main()
+{
+    node* root = NULL;
+
+    root = insertNode(root,50);
+    insertNode(root,30);
+    insertNode(root,20);
+    insertNode(root,40);
+    insertNode(root,70);
+    insertNode(root,60);
+    insertNode(root,60);
+    insertNode(root,80);
+
+    //preOrder(root);
+    //postOrder(root);
+    inOrder(root);
+    cout << endl;
+    cout << "successor of 60: " << getSuccessor(root,60)->key << endl << "predecessor of 70: " << getPredecessor(root,70)->key << endl;
+    root = deleteNode(root,30);
+    inOrder(root);
+
+    return 0;
+}

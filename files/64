@@ -1,0 +1,62 @@
+#include<stdio.h>
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+struct Edge
+{
+    int u,v,w;
+};
+
+vector <Edge> ev,ans;
+int root[100],cost=0;
+
+bool operator< (Edge a, Edge b)
+{
+    return a.w < b.w;
+}
+
+int findSet(int x)
+{
+    if(root[x]==x)
+        return x;
+    else
+        return root[x] = findSet(root[x]);
+}
+
+int kruskal()
+{
+    sort(ev.begin(),ev.end());
+    for(int i=0; i<ev.size(); i++)
+    {
+        int u = ev[i].u;
+        int v = ev[i].v;
+        int w = ev[i].w;
+        if(findSet(u) != findSet(v))
+        {
+            root[root[u]] = root[v];
+            cost += w;
+            ans.push_back(ev[i]);
+        }
+    }
+    cout << cost << endl;
+}
+
+int main()
+{
+    int n;
+    freopen("prim.txt","r",stdin);
+    cin >> n >> n;
+    for(int i=0; i<n;i++)
+    {
+        Edge e;
+        cin >> e.u >> e.v >> e.w;
+        ev.push_back(e);
+        root[e.u] = e.u;
+        root[e.v] = e.v;
+    }
+    kruskal();
+    for(int i=0; i<ans.size(); i++)
+        cout << ans[i].u << " " << ans[i].v << " : " << ans[i].w << endl;
+    return 0;
+}

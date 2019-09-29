@@ -1,0 +1,38 @@
+#include<iostream>
+#include<stdio.h>
+#include<algorithm>
+using namespace std;
+
+struct job
+{
+    int start,finish;
+};
+
+job arr[] = { {8,9},{1,2},{5,7},{3,4},{0,6},{5,9} };
+int n=6;
+
+bool comparator(job a, job b)
+{
+    return a.finish < b.finish;
+}
+
+void activity_selection()
+{
+    sort(arr,arr+n,comparator);
+    int i=0;
+    cout << arr[i].start << " " << arr[i].finish << endl;
+    for(int j=1;j<=n;j++)
+    {
+        if(arr[j].start >= arr[i].finish)
+        {
+            cout << arr[j].start << " " << arr[j].finish << endl;
+            i=j;
+        }
+    }
+}
+
+int main()
+{
+    activity_selection();
+    return 0;
+}

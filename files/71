@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <iostream>
+#include <algorithm>
+
+/*
+non-randomized quick sort
+running time O(n^2)
+*/
+
+using namespace std;
+
+int a[100000];
+int n = 50000, task=0;
+
+int apartition(int p, int r)
+{
+    int pivot = a[r];
+    int i = p-1;
+    for(int j=p; j<r; j++)
+    {
+        if(a[j] <= pivot)
+        {
+            i++;
+            swap(a[i],a[j]);
+            task++;
+        }
+    }
+    swap(a[i+1],a[r]);
+    return i+1;
+}
+
+void quicksort(int p, int r)
+{
+    if(p<r)
+    {
+        int i = (p+r)/2;
+        swap(a[i],a[r]);
+        int q = apartition(p,r);
+        quicksort(p,q-1);
+        quicksort(q+1,r);
+    }
+}
+
+int main()
+{
+    int x = 50000;
+    for(int i=n; i>=1; i--)
+    {
+        a[i] = x++;
+    }
+    quicksort(1,n);
+    cout << "reverse sorted:\t" << task << endl;
+
+    task=0;
+    x = 50000;
+    for(int i=1; i<=n; i++)
+    {
+        a[i] = x++;
+    }
+    quicksort(1,n);
+    cout << "already sorted:\t" << task << endl;
+
+    task=0;
+    for(int i=1; i<=n; i++)
+    {
+        a[i] = rand();
+    }
+    quicksort(1,n);
+    cout << "not sorted:\t" << task;
+
+    return 0;
+}

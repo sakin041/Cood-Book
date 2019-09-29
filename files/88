@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+    </head>
+    <body>
+        
+        <header class="personal_header">
+        <div class="home_link">
+            <a href="index.php">Code Crunch</a>
+        </div>
+    
+    </header>
+    
+    <div class="info">
+        <div class="info_photo">
+        </div>
+        <div class="info_details">
+            <h2> <?php 
+                ?> </h2>
+            <a href="index.php"><?php
+                ?></a>
+            <p><?php 
+                echo "Dhaka,BD"; 
+                ?></p>
+        </div>
+        <div class="info_social">
+            <a href="#">
+                <?php
+                echo "100"." "."Followings" ;
+                ?></a>
+            <a href="#"><?php
+                echo "2220"." "."Followers" ;
+                ?></a>
+            <a href="#">Follow</a>
+        </div>
+    </div>
+    
+    <div class="main_wrapper">
+        <nav class="nav">
+            <ul>
+                <li><a href="index.php" id="current_nav" >Personal</a></li>
+                <li><a href="#">Collection</a></li>
+                <li><a href="#">Watching</a></li>
+            </ul>
+        </nav>
+        <main class="main">
+            <div class="repo_description">
+                
+            </div>
+            <div class="repo">
+                <table>
+                        <tr>
+                            <th>title</th>
+                            <th>author</th>
+                            <th>last updated on</th>
+                            <th>download</th>
+                        </tr>
+                        <?php
+                        for($i=0; $i<20; $i++){
+                            
+                            echo '
+                            <tr>
+                            <td>Dijkstra Algorithm using priority queue.cpp</td>
+                            <td> <a href="#">@stereotyped</a> </td>
+                            <td>25-06-2017</td>
+                            <td> <a href="index.php">download</a> </td>
+                            </tr> ';
+                        }
+                        ?>
+                </table>
+            </div>
+        </main>
+    </div>
+        
+    </body>
+</html>

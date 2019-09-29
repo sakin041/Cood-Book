@@ -1,0 +1,96 @@
+.model small
+.data
+
+.code
+main proc
+    mov al,0h
+    mov bl,12
+    mov dl,7       ; performing (bx / dx)
+    mov cl,4h
+    
+    
+    rept:
+    mov ah,1
+    int 21h
+    mov bl,al
+    sub bl,30h
+    mov ah,1
+    int 21h
+    mov dl,al
+    sub dl,30h
+    mov al,0h
+    mov cl,4h
+    
+    start:
+    shl bl,1  
+    shl al,1
+    
+    test bl,00010000b
+    jz setA0
+    jnz setA1
+    setA0:
+    and al,11111110b
+    jmp cont
+    setA1:
+    or al,00000001b
+    jmp cont
+    cont:
+    
+    test al,00010000b
+    jz subtract
+    jnz addition
+    
+    
+    subtract:
+    sub al,dl
+    test al,00010000b
+    jz setB1
+    jnz setB0
+    
+    addition:
+    add al,dl
+    test al,00010000b
+    jz setB1
+    jnz setB0
+    
+    setB0:
+    and bl,11111110b
+    jmp endi
+    setB1:
+    or bl,00000001b
+    jmp endi
+    
+    endi:
+    dec cl
+    jz print
+    jmp start
+    
+    print:
+    and bl,00001111b
+    test al,00010000b
+    jz rem
+    add al,dl
+    ;not al
+    ;and al,00001111b
+    ;add al,1
+    rem:
+    mov cl,al
+     
+    mov dl,bl
+    add dl,30h
+    mov ah,2
+    int 21h
+    
+    mov dl,0ah
+    mov ah,2
+    int 21h
+    mov dl,0dh
+    mov ah,2
+    int 21h
+    mov dl,cl
+    add dl,30h
+    mov ah,2
+    int 21h
+    
+    jmp rept
+    main endp

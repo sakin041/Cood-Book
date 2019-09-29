@@ -1,0 +1,64 @@
+CREATE TABLE users(
+  userid INT(10) AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(20),
+  pass VARCHAR(20),
+  firstname VARCHAR(20),
+  lastname VARCHAR(20),
+  dob DATE,
+  gender CHAR,
+  email VARCHAR(200),
+  url VARCHAR(100),
+  city VARCHAR(20),
+  country VARCHAR(20),
+  company VARCHAR(20),
+  post VARCHAR(20)
+)ENGINE=InnoDB;
+
+
+
+CREATE TABLE folders(
+  folderid INT(10) AUTO_INCREMENT PRIMARY KEY,
+  foldername VARCHAR(20),
+  category VARCHAR(20),
+  created DATETIME,
+  userid INT(10),
+  FOREIGN KEY(userid) REFERENCES users(userid)
+)ENGINE=InnoDB;
+
+
+CREATE TABLE files(
+  fileid INT(10) AUTO_INCREMENT PRIMARY KEY,
+  filename VARCHAR(200),
+  folderid INT(10),
+  created DATETIME,
+  userid INT(10),
+  FOREIGN KEY(userid) REFERENCES users(userid),
+  FOREIGN KEY(folderid) REFERENCES folders(folderid)
+) ENGINE = InnoDB;
+
+CREATE TABLE FOLLOWS(
+  follower INT(10),
+  followed INT(10),
+  followdate DATE,
+  PRIMARY KEY(follower, followed),
+  FOREIGN KEY(follower) REFERENCES users(userid),
+  FOREIGN KEY(followed) REFERENCES users(userid)
+) ENGINE = InnoDB;
+
+CREATE TABLE likes(
+  lid INT(10) AUTO_INCREMENT PRIMARY KEY,
+  userid INT(10),
+  fileid INT(10),
+  liketime DATETIME,
+  FOREIGN KEY(userid) REFERENCES users(userid),
+  FOREIGN KEY(fileid) REFERENCES files(fileid)
+) ENGINE = InnoDB;
+
+
+SELECT files.fileid, files.filename,folders.folderid, folders.foldername, files.created,users.userid, users.username, COUNT(*) as stars
+FROM likes 
+INNER JOIN files ON files.fileid=likes.fileid 
+INNER JOIN users ON files.userid=users.userid
+INNER JOIN folders ON files.folderid=folders.folderid
+GROUP BY likes.fileid
+ORDER BY stars DESC

@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include <stack>
+#include <iostream>
+#include <algorithm>
+#define white 0
+#define grey 1
+#define black 2
+#define maxm 1000
+using namespace std;
+
+int grid[maxm][maxm];
+int time,vertex,edge;
+int dis[maxm],fin[maxm],color[maxm],par[maxm];
+stack <int> topo;
+string dress[] = {"under shorts", "pants", "belt", "shirt", "tie", "jacket", "socks", "shoes", "watch"};
+void dfs_visit(int u)
+{
+    cout << u << " ";
+    color[u]=grey;
+    time++;
+    dis[u]=time;
+    for(int v=0;v<vertex;v++)
+    {
+        if(grid[u][v]==1)
+        {
+            if(color[v]==white)
+            {
+                par[v]=u;
+                dfs_visit(v);
+            }
+        }
+    }
+    time++;
+    fin[u]=time;
+    topo.push(u);
+    color[u]=black;
+}
+
+void dfs()
+{
+    for(int u=0; u<vertex; u++)
+    {
+        color[u] = white;
+        par[u] = -1;
+    }
+    time=0;
+    for(int v=0; v<vertex; v++)
+    {
+        if(color[v]==white)
+            dfs_visit(v);
+    }
+}
+
+int main()
+{
+    int x,y;
+    freopen("topo.txt","r",stdin);
+    cin >> vertex >> edge;
+    for(int i=0;i<edge;i++)
+    {
+        cin >> x >> y;
+        grid[x][y]=1;
+    }
+    dfs();
+    while(!topo.empty())
+    {
+        cout << dress[topo.top()] << " ";
+        topo.pop();
+    }
+    return 0;
+}

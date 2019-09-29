@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <vector>
+#include<algorithm>
+#include<iostream>
+using namespace std;
+
+struct edge
+{
+    int u,v,w;
+};
+
+vector <edge> ev;
+vector <edge> ans;
+int root[100];
+
+int vertex,edges,cost=0;
+
+bool comparator(edge a, edge b)
+{
+    return a.w < b.w;
+}
+
+int findSet(int x)
+{
+    if(root[x] == x)
+        return x;
+    else
+        return root[x] = findSet(root[x]);
+}
+
+void kruskal()
+{
+    sort(ev.begin(),ev.end(),comparator);
+    for(int i=0; i<ev.size();i++)
+    {
+        int u = ev[i].u;
+        int v = ev[i].v;
+        int w = ev[i].w;
+        if(findSet(u) != findSet(v))
+        {
+            root[root[u]]=root[v];
+            cost+=w;
+            ans.push_back(ev[i]);
+        }
+    }
+}
+
+int main()
+{
+    freopen("prim.txt","r",stdin);
+    cin >> vertex >> edges;
+    for(int i =0; i<edges;i++)
+    {
+        edge e;
+        cin >>e.u >> e.v >> e.w;
+        ev.push_back(e);
+        root[e.u] = e.u; ///****** initialize root !!!!!
+        root[e.v] = e.v;
+    }
+    kruskal();
+    cout << cost;
+}

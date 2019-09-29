@@ -1,0 +1,47 @@
+.model small
+.stack 100h
+.code
+    
+main proc
+    
+    mov ah,1
+    int 21h     ; remainder dx
+    mov dl,al
+    sub dl,30h   
+    xor dh,dh   ; divisor   bx
+    
+    mov ah,1h
+    int 21h     ; quotent   cx
+    mov bh,al
+    sub bh,30h
+    xor bl,bl
+    
+    xor cx,cx
+    mov al,0h
+    
+    start:
+    inc al
+    sub dx,bx
+    jb restore
+    shl cx,1
+    or cx,1h
+    jmp decdiv
+    
+    
+    restore:
+    add dx,bx
+    shl cl,1
+    
+    decdiv:
+    shr bx,1
+    cmp al,16
+    jne start
+    
+    mov dx,cx
+    add dx,30h
+    mov ah,2h
+    int 21h
+    
+    
+    exit:
+main endp

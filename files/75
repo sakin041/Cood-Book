@@ -1,0 +1,61 @@
+#include<stdio.h>
+#include<iostream>
+#include<vector>
+using namespace std;
+
+int item[100],weight[100],profit[100],n,cap;
+int dp[100][100];
+bool taken[100][100];
+
+void print_knap(int i ,int j)
+{
+    if(i==0 || j==0)
+        return;
+    if(taken[i][j])
+    {
+        print_knap(i-1,j-weight[i]);
+        cout << weight[i] << " " << profit[i] << endl;
+    }
+    else
+        print_knap(i-1,j);
+}
+
+void knapsack()
+{
+    for(int i=0; i<=n; i++)
+    {
+        for(int j=0; j<=cap ; j++)
+        {
+            if(i==0 || j==0)
+                dp[i][j]=0;
+            else if(weight[i] > j)
+                dp[i][j]= dp[i-1][j];
+            else
+            {
+                if(profit[i]+dp[i-1][j-weight[i]] > dp[i-1][j])
+                {
+                    dp[i][j] = profit[i]+dp[i-1][j-weight[i]];
+                    taken[i][j] = true;
+                }
+                else
+                    dp[i][j]=dp[i-1][j];
+            }
+        }
+    }
+}
+
+
+int main()
+{
+    freopen("knapsack.txt","r",stdin);
+    cin >> n >> cap;
+    for(int i=1; i<=n;i++)                       ///*** form 1
+        cin >> item[i] >> weight[i] >> profit[i];
+
+    knapsack();
+    cout << dp[n][cap] << endl;
+    print_knap(n,cap);
+
+
+    return 0;
+}

@@ -1,0 +1,70 @@
+#include <stdio.h>
+#include <iostream>
+#include <vector>
+#include <list>
+#include <algorithm>
+#include <iterator>
+#include <queue>
+#define maxm 1000
+
+using namespace std;
+
+int vertex,edge;
+typedef pair <int,int> pr;
+list <pr> *adj = new list <pr> [maxm];
+priority_queue < pr, vector <pr> ,greater <pr> > pq;
+vector <int> dis (maxm,INT_MAX);
+vector <int> par (maxm,-1);
+
+void dijstra(int source)
+{
+    dis[source] = 0;
+    pq.push(pr(dis[source],source));
+    while(!pq.empty())
+    {
+        int u = pq.top().second;
+        pq.pop();
+        list <pr> :: iterator i;
+        for(i=adj[u].begin(); i!=adj[u].end(); i++)
+        {
+            int w = i->first;
+            int v = i->second;
+            if(dis[v] > dis[u]+w)
+            {
+                dis[v] = dis[u]+w;
+                par[v] = u;
+                pq.push(pr(dis[v],v));
+            }
+        }
+    }
+}
+
+void printpath(int src, int des)
+{
+    int trav = des,cost=0,path[maxm];
+    while(trav != src)
+    {
+        path[cost++]=trav;
+        trav = par[trav];
+    }
+    path[cost]=src;
+    for(int i=cost; i>=0; i--)
+        cout << path[i] << " ";
+}
+
+int main ()
+{
+    int u,v,w,s,d;
+    freopen("dijstra.txt","r",stdin);
+    cin >> vertex >> edge;
+    for(int i=0; i<edge; i++)
+    {
+        cin >> u >> v >> w;
+        adj[u].push_back(pr(w,v));
+    }
+
+    cin >> s >> d;
+    dijstra(s);
+    printpath(s,d);
+    return 0;
+}

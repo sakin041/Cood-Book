@@ -1,0 +1,115 @@
+.MODEL SMALL
+.DATA
+    MSG0 DB "THIS PROGRAM WORKS ONLY WITH SINGLE DIGIT I/O ",0AH,0DH,"$"
+    MSG1 DB 0AH,0DH,"ENTER DIVIDEND: $"   
+    MSG2 DB 0AH,0DH,"ENTER DIVISOR: $"
+    MSG3 DB 0AH,0DH,"QUOTIENT: $"
+    MSG4 DB 0AH,0DH,"REMAINDER: $"
+    MSG5 DB 0AH,0DH,"_______________________",0AH,0DH,"$"
+.CODE
+MAIN PROC
+    MOV AX,@DATA
+    MOV DS,AX
+    
+    
+    ; PERFORMING (BX / DX)
+    
+    MOV AH,9
+    LEA DX,MSG0
+    INT 21H
+    LEA DX,MSG1
+    INT 21H
+    
+    MOV AH,1
+    INT 21H
+    MOV BL,AL
+    SUB BL,30H
+    
+    MOV AH,9
+    LEA DX,MSG2
+    INT 21H
+    
+    MOV AH,1
+    INT 21H
+    MOV DL,AL
+    SUB DL,30H
+    MOV AL,0H
+    MOV CL,4H
+    
+    START:
+    SHL BL,1  
+    SHL AL,1
+    
+    TEST BL,00010000B
+    JZ SETA0
+    JNZ SETA1
+    SETA0:
+    AND AL,11111110B
+    JMP CONT
+    SETA1:
+    OR AL,00000001B
+    JMP CONT
+    CONT:
+    
+    TEST AL,00010000B
+    JZ SUBTRACT
+    JNZ ADDITION
+    
+    
+    SUBTRACT:
+    SUB AL,DL
+    TEST AL,00010000B
+    JZ SETB1
+    JNZ SETB0
+    
+    ADDITION:
+    ADD AL,DL
+    TEST AL,00010000B
+    JZ SETB1
+    JNZ SETB0
+    
+    SETB0:
+    AND BL,11111110B
+    JMP ENDI
+    SETB1:
+    OR BL,00000001B
+    JMP ENDI
+    
+    ENDI:
+    DEC CL
+    JZ PRINT
+    JMP START
+    
+    PRINT:
+    AND BL,00001111B
+    TEST AL,00010000B
+    JZ REM
+    ADD AL,DL
+    REM:
+    MOV CL,AL
+    
+    
+    MOV AH,9
+    LEA DX,MSG3
+    INT 21H
+     
+    MOV DL,BL
+    ADD DL,30H
+    MOV AH,2
+    INT 21H
+    
+    MOV AH,9
+    LEA DX,MSG4
+    INT 21H
+    
+    MOV DL,CL
+    ADD DL,30H
+    MOV AH,2
+    INT 21H
+    
+    MOV AH,9
+    LEA DX,MSG5
+    INT 21H
+
+    MAIN ENDP
+END MAIN

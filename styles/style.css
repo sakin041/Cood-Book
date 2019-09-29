@@ -1,0 +1,131 @@
+body {
+    margin: auto;
+    width: 1000px;
+    font-family: Segoe UI;
+}
+header nav {
+    width: 980px;
+    height: 60px;
+    padding: 10px;
+    background-color: #F6834A;
+    ;
+}
+.intro h2,
+h3,
+h4 {
+    margin-left: 5px;
+    color: #F6834A;
+}
+.intro ul {
+    margin-left: 10px;
+}
+.intro li {
+    margin-top: 10px;
+    color: #F6834A;
+}
+.home {
+    float: left;
+}
+.home a {
+    float: right;
+    margin-top: 0px;
+    margin-left: 10px;
+    display: block;
+    text-decoration: none;
+    color: white;
+    font-size: 250%;
+}
+.login {
+    float: right;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.login input {
+    background-color: #f4f4f4;
+    margin-right: 5px;
+    padding-left: 10px;
+    padding-right: 5px;
+    height: 25px;
+    border-radius: 10px;
+    border: 2px solid #f4f4f4;
+}
+.login button {
+    background-color: #f4f4f4;
+    margin-right: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    height: 35px;
+    width: 80px;
+    border-radius: 15px;
+    border: 2px solid #00757e;
+}
+.login button:hover {
+    background-color: #00757e;
+    color: white;
+    font-weight: bold;
+    border-radius: 15px;
+    border: 2px solid white;
+}
+.intro {
+    width: 450px;
+    float: left;
+    padding: 20px;
+}
+.signup {
+    float: right;
+    margin: 0px;
+    padding: 20px 30px;
+    width: 450px;
+}
+.signup h1 {
+    color: #198f98;
+    padding-left: 0px;
+}
+.signup input {
+    background-color: #f4f4f4;
+    margin-bottom: 20px;
+    margin-right: 10px;
+    padding-left: 10px;
+    padding-right: 0px;
+    height: 30px;
+    width: 390px;
+    border-radius: 10px;
+    border: 2px solid lightgrey;
+}
+.signup input[name="firstname"] {
+    width: 180px;
+    margin-top: 20px;
+}
+.signup input[name="lastname"] {
+    width: 180px;
+}
+.signup input:focus {
+    background-color: white;
+    border-radius: 10px;
+    border: 2px solid #00757e;
+}
+.signup button {
+    background-color: #f4f4f4;
+    margin-left: 120px;
+    margin-bottom: 50px;
+    padding-left: 5px;
+    padding-right: 5px;
+    height: 35px;
+    width: 150px;
+    border-radius: 15px;
+    border: 2px solid #00757e;
+}
+.signup button:hover {
+    background-color: #00757e;
+    color: white;
+    font-weight: bold;
+    border-radius: 15px;
+    border: 2px solid #00757e;
+}
+footer {
+    clear: both;
+    background-color: #328eff;
+}
+footer p {
+    text-align: center;
+}

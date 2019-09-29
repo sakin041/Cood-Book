@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include <iostream>
+#include <vector>
+#include <list>
+#include <algorithm>
+#include <iterator>
+#include <queue>
+#define maxm 1000
+
+using namespace std;
+
+int vertex,edge,cost=0;
+typedef pair <int,int> pr;
+list <pr> *adj = new list <pr> [maxm];
+priority_queue < pr, vector <pr> ,greater <pr> > pq;
+vector <int> key (maxm,INT_MAX);
+vector <int> par (maxm,-1);
+vector <bool> mst (maxm, false);
+
+void prim(int source)
+{
+    key[source] = 0;
+    pq.push(pr(key[source],source));
+    while(!pq.empty())
+    {
+        int u = pq.top().second;
+        int u_key = pq.top().first;
+        pq.pop();
+        if(mst[u]==false)
+        {
+            cost += u_key;
+            mst[u] = true;
+            list <pr> :: iterator i;
+            for(i=adj[u].begin(); i!=adj[u].end(); i++)
+            {
+                int w = i->first;
+                int v = i->second;
+                if(mst[v]==false && key[v] > w)
+                {
+                    key[v] = w;
+                    par[v] = u;
+                    pq.push(pr(key[v],v));
+                }
+            }
+        }
+
+    }
+}
+
+
+int main ()
+{
+    int u,v,w,s;
+    freopen("prim.txt","r",stdin);
+    cin >> vertex >> edge;
+    for(int i=0; i<edge; i++)
+    {
+        cin >> u >> v >> w;
+        adj[u].push_back(pr(w,v));
+        adj[v].push_back(pr(w,u));
+    }
+
+    cin >> s ;
+    prim(s);
+
+    for (int i = 0; i < vertex; ++i)
+        printf("%d - %d : %d\n", par[i], i, key[i]);
+        cout << cost;
+    return 0;
+}
+
