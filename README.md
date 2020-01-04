@@ -1,4 +1,4 @@
-# Share-Code
+# Cood-Book
 
 Share Code is a web project based on HTML, CSS and PHP and for database MySQL is used. It is mainly a code storage and sharing platform. Users can follow other users.
 
